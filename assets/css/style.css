@@ -1,0 +1,15 @@
+.card-title{
+    margin:50px 0px 30px 0px;
+} 
+
+.btn-primary {
+    margin:10px 0px 10px 0px;
+    width:90%;
+    height:50px;
+    text-align: center;
+    font-size:1.3em;
+}
+
+#timeLeft,#questionText {
+    border:0px solid;
+}
