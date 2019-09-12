@@ -82,18 +82,28 @@ $(document).ready(function() {
             countdownRunning = true;
             $("#startGame").text("Reset");
         } else {
-            clearInterval(intervalId);
-            rightCount=0;
-            wrongCount=0;
-            countdownRunning = false;
-            setOptions(questions.question1);
-            $("#startGame").text("Start Game");
+            clearGameBoard();
+        }
+    }
+
+    function clearGameBoard() {
+        clearInterval(intervalId);
+        rightCount=0;
+        wrongCount=0;
+        time=15;
+        $("#timeLeft").text("Time Left: " + time);
+        countdownRunning = false;
+        $("#startGame").text("Start Game");
+        $("#questionImg").attr("src","assets/images/gameStart.jpg");
+        for(i=0; i<4; i++) {
+            var answerHold = $("#Answer"+(i+1));
+            answerHold.text("Answer "+(i+1));
         }
     }
 
     function countdown() {
         time= time - 1;
-        if(time=="-1") {
+        if(time<0) {
             wrongCount++;
             AnswerAnimation("red")
             startNextRound();
@@ -105,19 +115,30 @@ $(document).ready(function() {
         correctAnswer = question.questionAnswer;
         $("#questionText").text(question.questionText);
         $("#questionImg").attr("src",question.questionImg);
+
+        var scrambleQuestions = question.questionOptions;
+    
+        for (let i = scrambleQuestions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [scrambleQuestions[i], scrambleQuestions[j]] = [scrambleQuestions[j], scrambleQuestions[i]];
+        }
+
         for(i=0; i<4; i++) {
             var answerHold = $("#Answer"+(i+1));
-            answerHold.text(question.questionOptions[i]);
+            answerHold.text(scrambleQuestions[i]);
         }
     }
 
     function startNextRound() {
         questionNumber++;
+        time=15;
+        $("#timeLeft").text("Time Left: " + time);
         if(questionNumber<=10) {
             var questionIndex = "question" + questionNumber;
             setOptions(questions[questionIndex]);
         } else {
-            alert("Game over - Correct: " + rightCount + " / Incorrect: " + wrongCount)
+            $("#questionText").html("<h1>GAME OVER</h1><h2>Correct: " + rightCount + " - Incorrect: " + wrongCount+"</h2>");
+            clearGameBoard();
         }
     }
 
@@ -134,16 +155,18 @@ $(document).ready(function() {
     }
 
     $(".btn-primary").on("click",function(){
-        time=15;
-        $("#timeLeft").text("Time Left: " + time);
-        if($(this).text() == correctAnswer) {
-            rightCount++;
-            AnswerAnimation("green");
-        } else {
-            wrongCount++;
-            AnswerAnimation("red");
+        if($("#startGame").text() === "Reset" && questionNumber <= 10) {
+            time=15;
+            $("#timeLeft").text("Time Left: " + time);
+            if($(this).text() == correctAnswer) {
+                rightCount++;
+                AnswerAnimation("green");
+            } else {
+                wrongCount++;
+                AnswerAnimation("red");
+            }
+            startNextRound();
         }
-        startNextRound();
     });
 
 });
