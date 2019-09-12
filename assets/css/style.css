@@ -1,5 +1,5 @@
 .card-title{
-    margin:50px 0px 30px 0px;
+    margin:30px 0px 30px 0px;
 } 
 
 .btn-primary {
@@ -10,6 +10,15 @@
     font-size:1.3em;
 }
 
+#startGame {
+    margin:20px 0px 20px 0px;
+}
+
 #timeLeft,#questionText {
     border:0px solid;
+}
+
+#questionImg {
+    margin-top: 10px;
+    width:40%
 }
