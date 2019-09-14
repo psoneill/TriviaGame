@@ -143,58 +143,84 @@ $(document).ready(function() {
     function setOptions(question) {
         //sets correct answer for future use
         correctAnswer = question.questionAnswer;
+        //sets current question text on screen
         $("#questionText").text(question.questionText);
+        //loads question image
         $("#questionImg").attr("src",question.questionImg);
-
+        //new array to hold scrambled question options
         var scrambleQuestions = question.questionOptions;
-    
+        //for loop to scramble options
         for (let i = scrambleQuestions.length - 1; i > 0; i--) {
+            //generates new constant that holds a random number
             const j = Math.floor(Math.random() * (i + 1));
+            //sets new index for scrambled array
             [scrambleQuestions[i], scrambleQuestions[j]] = [scrambleQuestions[j], scrambleQuestions[i]];
         }
-
+        //for loop to set answer button text
         for(i=0; i<4; i++) {
+            //holds answer button object
             var answerHold = $("#Answer"+(i+1));
+            //sets text of answer button
             answerHold.text(scrambleQuestions[i]);
         }
     }
-
+    //function to start next round
     function startNextRound() {
+        //increases question number by 1
         questionNumber++;
+        //resets time to 15
         time=15;
+        //displays time left on screen
         $("#timeLeft").text("Time Left: " + time);
+        //if statement to check if game should be over
         if(questionNumber<=10) {
+            //sets new question object
             var questionIndex = "question" + questionNumber;
+            //sets new options with updated question object
             setOptions(questions[questionIndex]);
         } else {
+            //if the game is over then display game over text
             $("#questionText").html("<h1>GAME OVER</h1><h2>Correct: " + rightCount + " - Incorrect: " + wrongCount+"</h2>");
+            //function to clear game board
             clearGameBoard();
         }
     }
-
+    //function calling animation that occurs on a right or wrong answer
     function AnswerAnimation(color) {
+        //sets border color of animation to input
         $("#timeLeft").css("borderColor",color);
+        //animates the timeLeft element to have a colored border 
         $("#timeLeft").animate({
+            //increases right and left border by 150 px on answer
             borderRightWidth: 150,
             borderLeftWidth: 150
           }, 200 );
         $("#timeLeft").animate({
+            //retracts border back to 0
             borderRightWidth: 0,
             borderLeftWidth: 0
         }, 200 );
     }
-
+    //function for any answer button being pressed
     $(".btn-primary").on("click",function(){
+        //if statement that makes sure that the game isn't completed 
         if($("#startGame").text() === "Reset" && questionNumber <= 10) {
+            //resets time to 15 and updates screen time left
             time=15;
             $("#timeLeft").text("Time Left: " + time);
+            //if statement deciding whether or not the answer was right
             if($(this).text() == correctAnswer) {
+                //adds one to the right answer count
                 rightCount++;
+                //calls green correct answer animation
                 AnswerAnimation("green");
             } else {
+                //adds one to the wrong answer count
                 wrongCount++;
+                //calls red incorrect answer animation
                 AnswerAnimation("red");
             }
+            //starts the next round of the game
             startNextRound();
         }
     });
