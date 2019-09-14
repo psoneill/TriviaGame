@@ -9,9 +9,9 @@ body {
 .btn-primary {
     margin:10px 0px 10px 0px;
     width:90%;
-    height:50px;
+    height:5vh;
     text-align: center;
-    font-size:1.3em;
+    font-size:2vh;
 }
 
 #startGame {
@@ -20,6 +20,7 @@ body {
 
 #timeLeft,#questionText {
     border:0px solid;
+    font-size:3vh;
 }
 
 #questionImg {
