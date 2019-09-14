@@ -3,7 +3,7 @@ body {
 }
 
 .card-title{
-    margin:30px 0px 30px 0px;
+    margin:10px 0px 10px 0px;
 } 
 
 .btn-primary {
@@ -15,7 +15,7 @@ body {
 }
 
 #startGame {
-    margin:20px 0px 20px 0px;
+    margin:10px 0px 10px 0px;
 }
 
 #timeLeft,#questionText {
@@ -24,5 +24,5 @@ body {
 
 #questionImg {
     margin-top: 10px;
-    width:40%
+    width:35%
 }
