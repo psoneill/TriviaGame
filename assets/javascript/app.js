@@ -1,10 +1,15 @@
 $(document).ready(function() {
-
+    //questions Object which holds all questions, answers, options, and images
     var questions = {
+        //name of questions follows pattern of questionx
         question1: {
+            //Questions text is the text that shows on the screen
             questionText: "The Taj Mahal was commissioned in 1632 by emporer Shah Jahan to as a tomb for whom?",
+            //Correct answer
             questionAnswer: "His Favorite Wife",
+            //Options 1-4 for questions
             questionOptions: ["His Favorite Wife", "His Son", "Himself", "His Father"],
+            //Image path associated with the question
             questionImg: "assets/images/tajMahal.jpeg"
         },
         question2: {
@@ -63,6 +68,7 @@ $(document).ready(function() {
         }
     }
 
+    //setting all global variables used in javascript
     var time=15;
     var questionNumber;
     var correctAnswer;
@@ -71,47 +77,71 @@ $(document).ready(function() {
     var wrongCount=0;
     var countdownRunning=false;
 
+    //setting base placeholder image
     $("#questionImg").attr("src","assets/images/gameStart.jpg");
+    //click event for starting the game as well as resetting the game
     $("#startGame").on("click", gameStart);
 
+    //function for starting the game
     function gameStart() { 
+        //only runs if the game isn't currently running to 
         if (!countdownRunning) {
+            //sets questionNumber equal to 1
             questionNumber=1;
+            //loads options for object question 1
             setOptions(questions.question1);
+            //starts intervalID with a 1 second interval
             intervalId = setInterval(countdown, 1000);
+            //sets the game clock to true so user cannot start another inverval
             countdownRunning = true;
+            //sets the startGame button text to reset
             $("#startGame").text("Reset");
         } else {
+            //on reset clear game board
             clearGameBoard();
         }
     }
 
     function clearGameBoard() {
+        //clears current interval
         clearInterval(intervalId);
+        //resets right, wrong, and time counts
         rightCount=0;
         wrongCount=0;
         time=15;
+        //shows updated time reset on the board
         $("#timeLeft").text("Time Left: " + time);
+        //flags that game is not currently running
         countdownRunning = false;
+        //changes start game button text to Start Game
         $("#startGame").text("Start Game");
+        //resets base image to placeholder
         $("#questionImg").attr("src","assets/images/gameStart.jpg");
-        for(i=0; i<4; i++) {
-            var answerHold = $("#Answer"+(i+1));
-            answerHold.text("Answer "+(i+1));
-        }
+        //resets answer choices to placeholders
+        $("#Answer1").text("Thank");
+        $("#Answer2").text("You");
+        $("#Answer3").text("For");
+        $("#Answer4").text("Playing!");
     }
 
     function countdown() {
+        //counts down time by 1
         time= time - 1;
+        //if time is less than 0 reset question
         if(time<0) {
+            //timer running out results in wrong answer
             wrongCount++;
-            AnswerAnimation("red")
+            //call answer animation with border color red
+            AnswerAnimation("red");
+            //start next round
             startNextRound();
         }
+        //set timeleft
         $("#timeLeft").text("Time Left: " + time);
     }
 
     function setOptions(question) {
+        //sets correct answer for future use
         correctAnswer = question.questionAnswer;
         $("#questionText").text(question.questionText);
         $("#questionImg").attr("src",question.questionImg);
